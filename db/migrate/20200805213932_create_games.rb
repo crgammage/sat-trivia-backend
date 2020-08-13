@@ -1,7 +1,8 @@
 class CreateGames < ActiveRecord::Migration[6.0]
   def change
     create_table :games do |t|
-      t.integer :total_score, default: 0
+      t.boolean :player_1_turn, default: true
+      t.boolean :finished, default: false
 
       t.timestamps
     end

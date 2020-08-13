@@ -3,39 +3,44 @@ class GamesController < ApplicationController
     
     def index
         games = Game.all
-        render json: games, include: [:users, :questions], except: [:updated_at, :created_at]
+        render json: games, include: [:user1s, :user2s, :questions], except: [:updated_at, :created_at]
     end
 
     def show
         game = Game.find(params[:id])
-        options = {
-            include: [:users, :questions]
-        }
-        render json: GameSerializer.new(game, options)
+        render json: game, include: [:user1s, :user2s, :questions]
     end
 
     def create
-        game = Game.new(game_params)
-        questions = params["questions"]
-        users = params["users"]
+        game = Game.new
+        questions = params["game"]["questions"]
+        user1 = User.find(params["game"]["user1s"]["id"])
+        user2 = User.find(params["game"]["user2s"]["id"])
+        byebug
+        game.user1s.push(user1)
+        game.user2s.push(user2)
+        byebug
         questions.each do |question|
             gameQuestion = Question.find(question["id"])
             game.questions << gameQuestion
             game.save
         end
-        users.each do |user|
-            gameUser = User.find(user["id"])
-            game.users << gameUser
-            game.save
-        end
-        render json: game, include: [:questions, :users], status: :created
+        
+        render json: game, include: [:user1s, :user2s, :questions], status: :created
+    end
+
+    def update
+        game = Game.find(params[:id])
+        game.player_1_turn = !game.player_1_turn
+        game.save
+        render json: game, include: [:user1s, :user2s, :questions]
     end
 
 
     private
 
     def game_params
-        params.require(:game).permit(:user, questions: [])
+        params.require(:game).permit(:player_1_turn, :finished, users: [:id, :name, :username, :password_digest, :level, :score], questions: [:questions => [:id, :prompt, :a, :b, :c, :d, :answer, :points]]).permitted?
     end
 
 end

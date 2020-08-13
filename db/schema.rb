@@ -23,7 +23,8 @@ ActiveRecord::Schema.define(version: 2020_08_05_214101) do
   end
 
   create_table "games", force: :cascade do |t|
-    t.integer "total_score", default: 0
+    t.boolean "player_1_turn", default: true
+    t.boolean "finished", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -41,7 +42,8 @@ ActiveRecord::Schema.define(version: 2020_08_05_214101) do
   end
 
   create_table "user_games", force: :cascade do |t|
-    t.integer "user_id"
+    t.integer "user1_id"
+    t.integer "user2_id"
     t.integer "game_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

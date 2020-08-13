@@ -15,10 +15,10 @@ lola = User.create(name: "Lola", username: "lolagirl", password: "kitty")
 game1 = Game.create
 game2 = Game.create
 
-UserGame.create(game: game1, user: christa)
-UserGame.create(game: game1, user: hailey)
-UserGame.create(game: game2, user: ivan)
-UserGame.create(game: game2, user: lola)
+UserGame.create(game: game1, user1: christa, user2: hailey)
+UserGame.create(game: game2, user1: ivan, user2: lola)
+
+
 
 question1 = Question.create(prompt: "If (x-1) / 3 = k and k = 3, what is the value of x?", a: "A. 2", b: "B. 4", c: "C. 9", d: "D. 10", answer: "D. 10", points: 5)
 question2 = Question.create(prompt: "On Saturday afternoon, Armand sent m text messages each hour for 5 hours, and Tyrone sent p text messages each hour for 4 hours. Which of the following represents the total number of messages sent by Armand and Tyrone on Saturday afternoon?", a: "A. 9mp", b: "B. 20mp", c: "C. 5m + 4p", d: "D. 4m + 5p", answer: "A. 9mp", points: 5)
