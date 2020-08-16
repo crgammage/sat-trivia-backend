@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 2020_08_05_214101) do
   create_table "games", force: :cascade do |t|
     t.boolean "player_1_turn", default: true
     t.boolean "finished", default: false
+    t.integer "completedQuestions", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -16,10 +16,8 @@ class GamesController < ApplicationController
         questions = params["game"]["questions"]
         user1 = User.find(params["game"]["user1s"]["id"])
         user2 = User.find(params["game"]["user2s"]["id"])
-        byebug
         game.user1s.push(user1)
         game.user2s.push(user2)
-        byebug
         questions.each do |question|
             gameQuestion = Question.find(question["id"])
             game.questions << gameQuestion
@@ -32,6 +30,10 @@ class GamesController < ApplicationController
     def update
         game = Game.find(params[:id])
         game.player_1_turn = !game.player_1_turn
+        game.completedQuestions = game.completedQuestions + 1
+        if game.completedQuestions >= 20 
+            game.finished = true
+        end
         game.save
         render json: game, include: [:user1s, :user2s, :questions]
     end
@@ -40,7 +42,7 @@ class GamesController < ApplicationController
     private
 
     def game_params
-        params.require(:game).permit(:player_1_turn, :finished, users: [:id, :name, :username, :password_digest, :level, :score], questions: [:questions => [:id, :prompt, :a, :b, :c, :d, :answer, :points]]).permitted?
+        params.require(:game).permit(:completedQuestions, :player_1_turn, :finished, users: [:id, :name, :username, :password_digest, :level, :score], questions: [:questions => [:id, :prompt, :a, :b, :c, :d, :answer, :points]]).permitted?
     end
 
 end
