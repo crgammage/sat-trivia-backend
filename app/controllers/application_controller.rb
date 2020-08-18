@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
 
     def encode_token(payload)
-      JWT.encode(payload, 'def123')
+      JWT.encode(payload, ENV["MY_TOKEN"])
     end
   
   
@@ -13,7 +13,7 @@ class ApplicationController < ActionController::API
       if auth_header
         token = auth_header
         begin
-          JWT.decode(token, 'def123', true, algorithm: 'HS256')
+          JWT.decode(token, ENV["MY_TOKEN"], true, algorithm: ENV["MY_ALGORITHM"])
         rescue JWT::DecodeError
           nil
         end
@@ -21,7 +21,6 @@ class ApplicationController < ActionController::API
     end
   
     def logged_in_user
-        byebug
       if decoded_token
         user_id = decoded_token[0]['user_id']
         @user = User.find_by(id: user_id)

@@ -33,8 +33,8 @@ before_action :authorized, only: [:stay_logged_in]
     end
 
     def stay_logged_in
-        wristband = encode_token({user_id: user.id})
-        render json: {user: user, token: wristband}
+        wristband = encode_token({user_id: @user.id})
+        render json: {user: @user, token: wristband}
     end
      
 
